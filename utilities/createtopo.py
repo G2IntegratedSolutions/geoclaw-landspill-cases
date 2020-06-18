@@ -231,11 +231,11 @@ def check_download_topo(casepath, rundata):
         ext[3] += res
 
         #  06/17/20, added topo source,  by Surendra, G2 IS
-        topo_source = rundata.topo_data.topo_source
+        topo_source = rundata.topo_source
         if topo_source and topo_source == "ESRI":  # generate token
             import base64
-            username = rundata.topo_data.username
-            passcode = base64.b64decode(rundata.topo_data.passcode).decode("utf-8")
+            username = rundata.username
+            passcode = base64.b64decode(rundata.passcode).decode("utf-8")
             token = request_arcgis_token(username, passcode)
         else:
             token = None
