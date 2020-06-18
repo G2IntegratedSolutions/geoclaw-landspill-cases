@@ -39,6 +39,9 @@ def setrun(claw_pkg='geoclaw'):
     assert claw_pkg.lower() == 'geoclaw',  'Expected claw_pkg = geoclaw'
     num_dim = 2
     rundata = data.ClawRunData(claw_pkg, num_dim)
+    rundata.add_attribute("topo_source", "3DEP", owner=None)
+    rundata.add_attribute("username", value=None, owner=None)
+    rundata.add_attribute("passcode", value=None, owner=None)
     rundata = setgeo(rundata)
     rundata = setamr(rundata)
     clawdata = rundata.clawdata
@@ -135,10 +138,7 @@ def setgeo(rundata):
     refinement_data.max_level_deep = 3
     refinement_data.variable_dt_refinement_ratios = True
     topo_data = rundata.topo_data
-    topo_data.topofiles.append([3, 1, 5, 0., 1.e10, "topo.asc"])
-    topo_data.topo_source = '3DEP'
-    topo_data.username = 'None'
-    topo_data.passcode = None
+    topo_data.topofiles.append([3, 1, 5, 0., 1.e10, "topo.asc"])   
     dtopo_data = rundata.dtopo_data
     rundata.qinit_data.qinit_type = 0
     rundata.qinit_data.qinitfiles = []
