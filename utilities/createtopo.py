@@ -45,7 +45,7 @@ import time
 def request_arcgis_token(
         username, password,
         token_server="https://www.arcgis.com/sharing/rest/generateToken",
-        exp=5):
+        exp=10):    # 06/17/20, updated exp=10 mins (from 5 mins) by Surendra, G2 IS
     """Request a token from ArcGIS token server
 
     Request a user token from ArcGIS. Only required when the source of elevation
@@ -230,11 +230,25 @@ def check_download_topo(casepath, rundata):
         ext[2] += res
         ext[3] += res
 
+        #  06/17/20, added topo source,  by Surendra, G2 IS
+        topo_source = rundata.topo_source
+        if topo_source and topo_source == "ESRI":  # generate token
+            import base64
+            username = rundata.username
+            passcode = base64.b64decode(rundata.passcode).decode("utf-8")
+            token = request_arcgis_token(username, passcode)
+        else:
+            token = None
+
+        # verify the image size as ESRI service has limitation on image size 5000
+        #
+
         if not os.path.isdir(os.path.dirname(topo_file)):
             os.makedirs(os.path.dirname(topo_file))
 
         print("Downloading {}".format(topo_file+".tif"), file=sys.stdout)
-        obtain_geotiff(ext, topo_file+".tif", res)
+        print("Topo Source {}".format(topo_source), file=sys.stdout)
+        obtain_geotiff(ext, topo_file+".tif", res, topo_source, token)  #  06/17/20, added topo source, token parameters by Surendra, G2 IS
         print("Done downloading {}".format(topo_file+".tif"), file=sys.stdout)
         print("Converting to ESRI ASCII file", file=sys.stdout)
         geotiff_2_esri_ascii(topo_file+".tif", topo_file)
