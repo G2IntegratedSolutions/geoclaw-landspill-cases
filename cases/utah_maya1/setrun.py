@@ -39,9 +39,9 @@ def setrun(claw_pkg='geoclaw'):
     assert claw_pkg.lower() == 'geoclaw',  'Expected claw_pkg = geoclaw'
     num_dim = 2
     rundata = data.ClawRunData(claw_pkg, num_dim)
-    rundata.add_attribute("topo_source", "3DEP")
-    rundata.add_attribute("username")
-    rundata.add_attribute("passcode")
+    rundata.add_attribute("topo_source", "ESRI")
+    rundata.add_attribute("username", "spinjala_G2")
+    rundata.add_attribute("passcode", b'VGVqYXNzYWlAMXA=')
     rundata = setgeo(rundata)
     rundata = setamr(rundata)
     clawdata = rundata.clawdata
